@@ -1,0 +1,9 @@
+services:
+    w3all.w3audiovideotopost.listener:
+        class: w3all\w3audiovideotopost\event\main_listener
+        arguments:
+            - '@language'
+            - '@template'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }
