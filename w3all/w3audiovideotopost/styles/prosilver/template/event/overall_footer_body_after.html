@@ -217,9 +217,7 @@ if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
   	var ext1 = this.text.substr(this.text.length - 4); // webm etc
   	
   	 // Only mp3 considered at moment
-     if(ext0 != 'mp3'){
-  	  return;
-     }
+     if(ext0 != 'mp3'){ return; }
   
    e.preventDefault(e);
    e.stopPropagation(e);
