@@ -1,0 +1,628 @@
+<script>
+// Copyright -> axew3.com 
+var W3AVR_MODEON_VIEWTOPIC = "{U_VIEW_TOPIC}".split("viewtopic.php");
+</script>
+
+<!-- IF W3AVR_MODEON_VIEWTOPIC or S_QUICK_REPLY -->
+<div id="w3PlayContainer" class="w3PlayContainer text-center inputbox" style="display:none"><br /><br /><ul id="w3playlistAll" style="list-style:none;"></ul></div>
+
+<script>
+// Copyright -> axew3.com 
+  const W3ALL_AV_POST_ATTACHMENTS_ARY = "{W3ALL_AV_POST_ATTACHMENTS_ARY}";
+  const W3AVR_USERS_APOST_OWN = "{W3AVR_USERS_APOST_OWN}";
+  
+if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
+	
+ // Audio player button (where attach on post, top bar and bottom bar on viewtopic)
+
+ var w3AbuttPAtop = document.getElementsByClassName("bar-top"); // NEED to match on DOM
+ var w3AbuttPAbottom = document.getElementsByClassName("bar-bottom"); // NEED to match on DOM
+ //var w3AbuttPApostButt = document.getElementsByClassName("post-buttons"); // NEED to match on DOM
+
+ var w3allpA = document.createElement("button");
+   	 w3allpA.style = "";
+   	 w3allpA.className = "button button-icon-only w3allPAm";
+   	 w3allpA.id = "w3allPAm";
+   	 w3allpA.setAttribute("title","Play Audio on Topic");
+   	 var w3allia = document.createElement("i");
+     w3allia.className = "icon far fa-play-circle";
+   	 w3allia.style = "font-size:100%;";
+     w3allpA.appendChild(w3allia);
+   	 w3AbuttPAtop[0].appendChild(w3allpA);
+
+ var w3allpA0 = document.createElement("button");
+   	 w3allpA0.style = "";
+   	 w3allpA0.className = "button button-icon-only w3allPAm";
+   	 w3allpA0.setAttribute("title","Play Audio on Topic");
+   	 var w3allia0 = document.createElement("i");
+     w3allia0.className = "icon far fa-play-circle";
+   	 w3allia0.style = "font-size:100%;";
+     w3allpA0.appendChild(w3allia0);
+   	 w3AbuttPAbottom[0].appendChild(w3allpA0);
+   	 
+ /*var w3allpAp = document.createElement("button");
+   	 w3allpAp.style = "";
+   	 w3allpAp.className = "button button-icon-only w3allPAm";
+   	 w3allpAp.setAttribute("title","Play Audio on Topic");
+   	 var w3alliap = document.createElement("i");
+     w3alliap.className = "icon far fa-play-circle";
+   	 w3alliap.style = "font-size:100%;";
+     w3allpAp.appendChild(w3alliap);
+   	 w3AbuttPApostButt[0].appendChild(w3allpAp);*/
+	 
+
+// audio attachments array
+ const w3AaryDecodedData = window.atob(W3ALL_AV_POST_ATTACHMENTS_ARY);
+ var w3Adata = JSON.parse(w3AaryDecodedData);
+// array of pairs posts ids and users 
+ const w3AUDataOwn = window.atob(W3AVR_USERS_APOST_OWN);
+ var w3AUOwn = JSON.parse(w3AUDataOwn);
+
+ // rebuild object of audio attachments data (but what it is really doing this here? TODO: review and change this part of code)
+ const w3aryAttachments = new Object();
+ const w3aryAttachIdsSeq = new Array();
+ 
+ function w3aryAttachmentsBuild(d){
+  var i = 0;
+  
+  //const a = Object.values(d); // do not work on all browser 
+  //so substituted by the following function
+  function objV(obj) {
+    let vals = [];
+    let w3prop;
+    for (w3prop in obj) {
+        vals.push(obj[w3prop]);
+    }
+    return vals;
+  }
+  var a = objV(d);
+  
+
+  function Aobj(item) {
+   w3aryAttachments[i] = item;
+   i++;
+  }
+   a.forEach(Aobj);
+   return a;
+ }
+ 
+ // setup array of attachments and push attachments into player rows
+ const w3aryAttachmentsRes = w3aryAttachmentsBuild(w3Adata);
+ 
+ // play sequentially audio files
+ // w3aryAttachIdsSeq array to check against, so to get the next to play
+ // w3AVPushRowPlayer() -> listener -> w3APlayAllSeqListener() -> event.target.id
+
+ var w3currPlay = w3currPlaying = 0;
+ 
+ function w3APlayAllSeqListenerRemPrev(event){
+ 	
+ 	if( w3currPlaying != event.target.id && w3currPlaying != 0 ){
+ 		var rem = document.getElementById(w3currPlaying);
+ 		rem.pause();
+    rem.src = rem.src;
+ 	}
+ 	 w3currPlaying = event.target.id;
+ }
+ 
+ function w3APlayAllSeqListener(event){
+ 	//var eti = event.target.id;
+     // console.log(event);
+ 	var apid = event.target.id.split('-');
+ 	apid = apid[1];
+ 	
+ 	 	var nextP; 
+ 	  var found = 0;
+ 	  var al = w3aryAttachIdsSeq.length;
+ 	
+ 	   for (i = 0; i < al; i++) {
+ 	   	if(found > 0 ){
+ 	   		nextP = w3aryAttachIdsSeq[i];
+ 	   		al = 0; // found, break for loop within
+ 	   	 } 
+ 	   	if(apid == w3aryAttachIdsSeq[i]){
+ 	   	 found++;
+      }
+      
+ 	   }
+     
+    if( typeof nextP != 'undefined' ){
+     var ntp = 'aPID-' + nextP;
+     document.getElementById(ntp).play();
+    }
+ 	
+ }
+ 
+
+
+  function w3AVPushRowPlayer(pRow){
+
+  	var totB = Object.keys(pRow).length;
+  	
+  	for (let i = 0; i < totB; i++) {
+  
+  		w3aryAttachIdsSeq.push(pRow[i]['attach_id']);
+  	
+ 	   // push the audio player row
+ 	    var li = document.createElement('li');
+ 	    // add EXT
+ 	    var furl = "{BOARD_URL}download/file.php?id=" + pRow[i]['attach_id'];
+      const player = new Audio(furl);
+      player.controls = true;
+
+      player.setAttribute("preload", "auto"); // setup as auto by default, or may when popup open?
+      var aPID = 'aPID-' + pRow[i]['attach_id'];
+      player.setAttribute("id", aPID);
+      //https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events
+      player.onended  = (event) => {
+      	w3APlayAllSeqListener(event);
+      };
+      player.onplay  = (event) => {
+      	w3APlayAllSeqListenerRemPrev(event);
+      };
+      li.appendChild(player);
+      const liuname = document.createElement('div');
+      var im = '<strong>by ' + w3AUOwn[pRow[i]['post_msg_id']] + '</strong> &#187; ' + new Date(pRow[i]['filetime'] * 1000).toLocaleString();
+      liuname.innerHTML += im;
+      li.appendChild(liuname);
+      document.querySelector('#w3playlistAll').appendChild(li);
+
+ 	  }
+ 	 }
+ 
+ if( w3aryAttachmentsRes.length > 0 ){
+  let totA = w3aryAttachmentsRes.length;
+   for (let i = 0; i < totA; i++) {
+    w3AVPushRowPlayer(w3aryAttachmentsRes[i]);
+   }
+ }
+ 
+
+ $( ".w3allPAm").on( "click", function(e) {
+   e.preventDefault(e);
+   e.stopPropagation(e);
+   
+  $("#w3PlayContainer").css({ "display":"block" });
+  
+  // this is just a fly fix for iframe mode
+  if(window.self !== window.top){
+     var topG = $('#w3PlayContainer').offset().top;
+     $(parent.window).scrollTop( topG );
+  }
+
+  var totalHeight = 0; 
+  $("#w3PlayContainer > *").each(function () {
+  totalHeight = $(this).height();
+  });
+  $("#w3PlayContainer").css({ "height" : 20+totalHeight, "maxHeight" : "350px" });
+   
+  $( "audio" ).each(function () {
+ 	 $(this).attr("preload","auto");
+  });
+
+ // remove popoup (and event listener)
+	var remListenerRecCont = $(document).mouseup(function (e) {
+   if ($(e.target).closest("#w3PlayContainer").length === 0 && (e.target != $('html').get(0))) {
+     $("#w3PlayContainer").css({ "display":"none" });
+       $( "audio" ).each(function () {
+ 	       	  //$(this).attr("src",this.src);
+ 	       		$(this).trigger('pause');
+       });
+     remListenerRecCont.unbind('mouseup');
+    } 
+  });
+  
+ })
+ 
+ // Open the player onclick into post's file name, when file extension is mp3, mp4 or webm or ...
+  $( ".file a[class='postlink']").on( "click", function(e) {
+  	
+  	// Check if the file is kind that can be processed
+  	var ext0 = this.text.substr(this.text.length - 3); // mp3,mp4 etc
+  	var ext1 = this.text.substr(this.text.length - 4); // webm etc
+  	
+  	 // Only mp3 considered at moment
+     if(ext0 != 'mp3'){
+  	  return;
+     }
+  
+   e.preventDefault(e);
+   e.stopPropagation(e);
+   
+   
+  $("#w3PlayContainer").css({ "display":"block" });
+  
+  	var res = this.href.split("id=");
+  if( typeof res[1] != "undefined" && res[1] > 1 ){
+   var ntp = 'aPID-'+res[1];
+   var sp = document.getElementById(ntp);
+   //sp.volume = 0; // onmouseover will not play: it require user's explicit action to work // https://developer.mozilla.org/en-US/docs/Web/Media/Autoplay_guide#autoplay_availability
+   sp.play();
+  }
+ 
+  // this is a fly fix for iframe mode
+  if(window.self !== window.top){
+     var topG = $('#w3PlayContainer').offset().top;
+     $(parent.window).scrollTop( topG );
+  }
+
+   var totalHeight = 0; 
+   $("#w3PlayContainer > *").each(function () {
+    totalHeight = $(this).height();
+   });
+   
+   $("#w3PlayContainer").css({ "height" : 20+totalHeight, "maxHeight" : "350px" });
+   
+   $( "audio" ).each(function () {
+ 	  $(this).attr("preload","auto");
+   });
+
+ // remove popoup (and event listener)
+	var remListenerRecCont = $(document).mouseup(function (e) {
+   if ($(e.target).closest("#w3PlayContainer").length === 0 && (e.target != $('html').get(0))) {
+     $("#w3PlayContainer").css({ "display":"none" });
+            $( "audio" ).each(function () {
+ 	       	 // $(this).attr("src",this.src);
+ 	       		$(this).trigger('pause');
+       });
+     remListenerRecCont.unbind('mouseup');
+    } 
+  });
+  
+ })
+ 
+ 
+} // END if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
+
+</script>
+
+<!-- ENDIF -->
+
+
+<!-- IF W3AVR_MODEON -->
+
+ <div id="w3RecContainer" class="w3RecContainer text-center inputbox" style="display:none"><br /><button id="w3recAbutt" class="btn btn-primary button">Start recording</button><br /><button id="w3RecOnbutton" class="w3RecOn" style="display:none">Recording</button><br /><ul id="w3playlist" style="list-style:none;"></ul><br /><div class="attachNWrap" style="display:none">attach name (optional) max 120 chars <input type="text" id="w3recAname" class="inputbox" name="w3recAname" minlength="4" maxlength="120" size="30" placeholder="Only letters, numbers and - (hyphen)" /></div><br/><button id="w3allAVdo" style="display:none" class="button button-icon-only">Attach audio</button>&nbsp; <button id="w3allAVdel" style="display:none" class="button button-icon-only">X</button><div id="w3avpreloader" class="w3avpreloader" style="display:none"><div></div>
+
+ <script src="{BOARD_URL}ext/w3all/w3audiovideotopost/styles/prosilver/template/js/adapter-master/release/adapter.js"></script>
+ <script src="{BOARD_URL}ext/w3all/w3audiovideotopost/styles/prosilver/template/js/mic-recorder-to-mp3/dist/index.js"></script>
+
+<script>
+// Copyright -> axew3.com 
+// Only if in 'posting, edit or reply mode'
+
+  const W3ALLREQ_MODE = "{W3ALLREQ_MODE}";
+  const W3PHPBBURL = "{BOARD_URL}";
+  const W3COOKIEDOMAIN = "{W3COOKIEDOMAIN}";
+
+if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'reply' ){
+	
+// AV buttons 
+// Audio recorder
+ var w3AbuttIns = document.getElementById('format-buttons'); // NEED to match on DOM
+ var w3allbA = document.createElement("button");
+   	 w3allbA.style = "";
+   	 w3allbA.className = "button button-icon-only";
+   	 w3allbA.setAttribute("title","Record Audio");
+   	 w3allbA.id = "w3allAtp";
+   	 var w3alli = document.createElement("i");
+     w3alli.className = "icon fas fa-volume-up";
+   	 w3alli.style = "font-size:100%;";
+     w3allbA.appendChild(w3alli);
+     if( w3AbuttIns != null ){
+   	  w3AbuttIns.appendChild(w3allbA);
+   	 }
+ /*  	 
+// Video recorder
+ var w3allbAU = document.createElement("button");
+   	 w3allbAU.style = "";
+   	 w3allbAU.className = "button button-icon-only";
+   	 w3allbAU.id = "w3allAVtp";
+   	 var w3alli = document.createElement("i");
+     w3alli.className = "icon fas fa-film";
+   	 w3alli.style = "font-size:100%;";
+     w3allbAU.appendChild(w3alli);
+   	 w3AbuttIns.appendChild(w3allbAU);
+ */
+ 
+ // default vars to send to the recorder
+ 	var w3usession = "{SESSION_ID}";
+ 	var w3blobAV;
+  var w3forumid = "{FORUM_ID}";
+ // find the form token on posting // NEED TO MATCH ON DOM 
+	var w3formtoken = $('input[name="form_token"]').attr("value");
+	var w3formtokentime = $('input[name="creation_time"]').attr("value");
+  var w3recAbutt = document.getElementById('w3recAbutt');
+  var w3allAVdoButt = document.getElementById('w3allAVdo');
+  var w3RecOnButPulse = document.getElementById('w3RecOnbutton');
+  var recorder = new MicRecorder({ bitRate: 128 });
+    
+  w3recAbutt.addEventListener('click', startRecording);
+
+// load recorder
+	$( "#w3allAtp").on( "click", function(e) {
+		if( typeof w3formtoken == 'undefined' ){
+			alert('Missing Form Token');
+		 return;
+		}
+   e.preventDefault(e);
+   e.stopPropagation(e);
+   w3PrintPopupAV();
+  });
+
+  
+ function w3PrintPopupAV(){
+ 	
+  $("#w3RecContainer").css({ "display":"block" });
+
+  // this is just a fly fix for a possible iframe mode
+  if(window.self !== window.top){
+     var topG = $('#w3RecContainer').offset().top;
+     $(parent.window).scrollTop( topG );
+  }
+
+ // remove popoup (and event listener)
+	var remListenerRecCont = $(document).mouseup(function (e) {
+   if ($(e.target).closest("#w3RecContainer").length === 0 && (e.target != $('html').get(0))) {
+     $("#w3RecContainer").css({ "display":"none" });
+     remListenerRecCont.unbind('mouseup');
+    } 
+  });
+ }
+
+ function w3_AUres_ajaxup(r){
+
+ // output response errors, if there are
+	res_a = r.split("//#//");
+ if( typeof res_a[0] != "undefined" && /W3ERRORAV:|FORBIDDEN:/ig.exec(res_a[0]) !== null ){
+ 		 alert(res_a[0]);
+ 		 return;
+ }
+
+  // data for plupload 
+  if( typeof res_a != "undefined" && $.trim(res_a[1]) > 0 )
+  {
+	   fn = $.trim(res_a[8]); // filename
+	   fid = $.trim(res_a[1]); // file ID 
+	   fsize = $.trim(res_a[13]); // filesize 
+	   forphan = $.trim(res_a[6]); // orphan state
+	   fmt = $.trim(res_a[12]); // mimetype
+	   fac = $.trim(res_a[10]); // attach_comment
+	   ftm = $.trim(res_a[14]); // filetime
+	   
+	// rand attachID for the new inserted row
+ 	var w3newattachrowrandid = (0|Math.random(6,10)*9e6).toString(36) + Math.random().toString().substring(2);
+	
+  var w3pushObj0 = new Object();
+  w3pushObj0['id'] = 'o_'+w3newattachrowrandid;
+  w3pushObj0['name']   = fn;
+  w3pushObj0['type'] = fmt;
+  w3pushObj0['attach_comment'] = fac;
+  w3pushObj0['filesize'] = fsize;
+  w3pushObj0['relative_path'] = '';
+  w3pushObj0['size'] = fsize;
+  w3pushObj0['origSize'] = fsize;
+  w3pushObj0['loaded'] = fsize;
+  w3pushObj0['percent'] = 100;
+  w3pushObj0['status'] = 5;
+  w3pushObj0['lastModifiedDate'] = new Date(ftm*1000).toLocaleString(); // '12/2/1970, 00:30:00 AM'; // not required in this way, could be set as 0
+  w3pushObj0['completeTimestamp'] = 0; // ... same as lastModifiedDate above
+  // while this is not required
+  //w3pushObj0['getNative'] = 'function(){var e=this.getSource().getSource();return-1!==l.inArray(l.typeOf(e),["blob","file"])?e:null}';
+  //w3pushObj0['getSource'] = 'function(){return t[this.id]?t[this.id]:null}';
+  //w3pushObj0['destroy'] = 'function(){var e=this.getSource();e&&(e.destroy(),delete t[this.id])}';
+  //w3pushObj0['index'] = 0;
+  
+  var w3pushObj1 = new Object();
+  w3pushObj1['attach_id'] = fid;
+  w3pushObj1['is_orphan']   = forphan;
+  w3pushObj1['real_filename'] = fn;
+  w3pushObj1['attach_comment'] = fac;
+  w3pushObj1['filesize'] = fsize;
+  
+  // add data to plupload
+   phpbb.plupload.data.unshift(w3pushObj1);
+
+ //var downurl = './download/file.php?mode=view&id='+fid;
+ var downurl = '{BOARD_URL}download/file.php?mode=view&id='+fid;
+  // insert the row
+ var w3file = phpbb.plupload.insertRow(w3pushObj0);
+  // add relevant and needed plupload values to the pushed element
+ $("#"+w3pushObj0['id']).attr("data-attach-id",fid);
+  // follow adding relevant data to the just created row
+ $(function() {
+		 row = $('[data-attach-id="' + fid + '"]');
+		 var url = downurl;
+		 var link = $('<a></a>');
+		 link.attr('href', url).html(fn);
+		 row.find('.file-name').html(link);
+ 		 $("#file-list-container").show();
+     $(".file-progress").css({ "display":"none" });
+     $(".file-status").addClass("file-uploaded");
+     //$(".attach-controls > .file-inline-bbcode").css({ "display":"inline-block" });
+     $(".attach-controls > .file-inline-bbcode").show();
+     // Trick: add an id to retrieve correct values for this row: so used to remove placeholders from text
+     $("#"+w3pushObj0['id']+" > td > .attach-controls > .file-delete").attr('id', 'w3sw1'+fid);
+
+   // a trick to manage file deletion
+   $( "#"+'w3sw1'+fid ).each(function () {
+     
+    this.addEventListener('click', function (event) {
+    
+      var rfid = $( this ).attr('id');
+      var rfi = rfid.split("w3sw1");
+      fid = rfi[1]; // set to the clicked file id, previously pushed into .file-delete as 'w3sw1'+fid
+   
+     	if($( ".file-delete" ).length == 1){
+     		$("#file-list-container").css({ "display":"none" });
+     	}
+    
+      // data x delete 
+      var w3data = [ fid, w3usession, w3formtoken, w3formtokentime, w3forumid ]; 	
+      // delete the file
+      w3sendThisAVd(w3data,'','delAttach');
+    
+     // remove html row on attachments panel
+      $( this ).parentsUntil("tbody").remove();
+     	 var rem = phpbb.plupload.getIndex(fid);
+     	 phpbb.plupload.update(phpbb.plupload.data, 'removal', rem);
+     
+     });
+      
+   });
+
+ });
+
+  // push the last inserted row into plupload array of data
+  phpbb.plupload.update(phpbb.plupload.data, 'addition', 0);
+  $("#w3avpreloader").css("display","none");
+  $("#w3RecContainer").css("display","none");
+
+ }
+
+} // END // function w3_fileSrc_ajaxup(r){
+
+
+
+ function w3sendThisAVd(w3dataAVd,w3data,task){
+  
+  let ARY = [];
+  ARY[0] = w3dataAVd;
+  //ARY[1] = w3tokenAVuData;
+  //values =  JSON.stringify(ARY);
+ 
+  var XHR = new XMLHttpRequest();
+  var urlEncodedData = "";
+  var urlEncodedDataPairs = [];
+ 
+  if(task == 'doAttach'){
+   if(w3data != ''){	
+    ARY[1] = w3data;
+   }
+   urlEncodedDataPairs.push(encodeURIComponent("data") + "=" + encodeURIComponent(ARY));
+  }
+  if(task == 'delAttach'){
+   urlEncodedDataPairs.push(encodeURIComponent("data_attach_del") + "=" + encodeURIComponent(ARY));
+  }
+
+   XHR.addEventListener("error", function(event) {
+    alert("Error: " + event);
+   });
+   XHR.addEventListener("timeout", function(event) {
+    alert("Error: timeout");
+   });
+   XHR.onreadystatechange = function() {
+    if (XHR.readyState === 0 || XHR.readyState === 1) { 
+     //console.log("XHRstarting -> "+XHR.response);
+    } else if (XHR.readyState === 3) {
+    	//console.log("XHRwaiting -> "+XHR.response);
+    	if(/W3ERRORAV|404/ig.exec(XHR.response) !== null )
+    	{
+ 		   alert('Error');
+ 		   return;
+      }
+    } else if (XHR.readyState === 4) { // onload 
+      if(task == 'doAttach'){
+       w3_AUres_ajaxup(XHR.response);
+      }
+      //console.log(XHR.response);
+      }
+   }
+
+  XHR.open("POST", "{BOARD_URL}ext/w3all/w3audiovideotopost/core/attach_do_file.php");
+  XHR.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  XHR.send(urlEncodedDataPairs);
+}
+
+    function startRecording() {
+      recorder.start().then(() => {
+        w3recAbutt.textContent = 'Stop recording';
+        w3RecOnButPulse.setAttribute("style", "");
+        w3recAbutt.removeEventListener('click', startRecording);
+        w3recAbutt.addEventListener('click', stopRecording);
+        
+      }).catch((e) => {
+        console.error(e);
+      });
+    }
+
+ function stopRecording() {
+   recorder.stop().getMp3().then(([buffer, blob]) => {
+       // console.log(buffer, blob);
+        w3blobAV = blob; // put the blob into w3blobAV
+        const file = new File(buffer, 'audio.mp3', {
+          type: blob.type,
+          lastModified: Date.now()
+        });
+        
+   var w3AbuttIns = document.getElementById('w3allAVdo'); 
+   w3AbuttIns.src = URL.createObjectURL(blob);
+   w3AbuttIns.href = w3AbuttIns.src;
+   w3AbuttIns.download = "Recorded.mp3";
+   w3allAVdoButt.setAttribute("style", "display:inline-block");
+   document.getElementById("w3allAVdel").setAttribute("style", "display:inline-block");
+   
+   $(".attachNWrap").css("display","block");
+   document.getElementById("w3recAbutt").setAttribute("disabled", "true");
+   document.getElementById("w3recAbutt").setAttribute("style", "opacity: 0.6;");
+ 
+  const li = document.createElement('li');
+  const player = new Audio(URL.createObjectURL(file));
+  player.controls = true;
+  li.appendChild(player);
+  document.querySelector('#w3playlist').appendChild(li);
+  w3RecOnButPulse.setAttribute("style", "display:none");
+  w3recAbutt.textContent = 'Start recording';
+  w3recAbutt.removeEventListener('click', stopRecording);
+  w3recAbutt.addEventListener('click', startRecording);
+  }).catch((e) => {
+        console.error(e);
+      });
+  
+ } // END function stopRecording() {
+    
+ 
+ $("#w3allAVdo").on("click", function(event) {
+	event.preventDefault();
+	var an = document.getElementById("w3recAname").value;
+	var reader = new window.FileReader();
+  reader.readAsDataURL(w3blobAV);
+   reader.onloadend = function()
+   {
+    base64data = reader.result;
+	  w3sendThisAVd(base64data,an,'doAttach');
+   }
+
+   //document.getElementById("w3avpreloader").setAttribute("style", "display:block");
+   $(this).css("display","none");
+   $("#w3avpreloader").css("display","block");
+   $("#w3playlist > li").css("display","none");
+   $("#w3recAbutt").removeAttr( "disabled" );
+   $("#w3recAbutt").removeAttr( "style" );
+   
+   $(".attachNWrap").css("display","none");
+   $("#w3allAVdel").css("display","none");
+   $("#w3recAname").val("");
+   
+	return;
+  
+ })
+ 
+  $("#w3allAVdel").on("click", function(event) {
+
+      $(this).css("display","none");
+      $("#w3playlist > li").css("display","none");
+      $("#w3allAVdo").css("display","none");
+      $("#w3recAbutt").removeAttr( "disabled" );
+      $("#w3recAbutt").removeAttr( "style" );
+      $(".attachNWrap").css("display","none");
+      
+	return;
+  
+ })
+
+
+} // END fire only if in 'posting, reply or edit mode'
+
+</script>
+
+<!-- ENDIF -->
