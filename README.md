@@ -6,9 +6,11 @@ Actually only audio (not video) recorder for phpBB
 
 ## Install
 
-Copy the "w3all" folder into phpBB/ext/
+Copy the "w3all" folder into 
+### phpBB/ext/
 
-So you'll have: phpBB/ext/w3all/w3audiovideotopost
+So you'll have: 
+### phpBB/ext/w3all/w3audiovideotopost
 
 Go to "ACP" > "Customise" > "Extensions" and enable the "Audio Player and Recorder on Posts" extension
 
