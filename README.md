@@ -16,7 +16,7 @@ Go to "ACP" > "Customise" > "Extensions" and enable the "Audio Player and Record
 
 Done
 
-Get general (raw) idea on how it work here:
+Get general (raw) idea on how it work at axew3.com:
 
 ### [phpBB Audio Player and Recorder on Posts](https://www.axew3.com/w3/forums/viewtopic.php?f=20&t=1628 "phpbb images attachments rotation")
 
