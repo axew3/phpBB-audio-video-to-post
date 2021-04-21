@@ -1,8 +1,3 @@
-<script>
-// Copyright -> axew3.com 
-var W3AVR_MODEON_VIEWTOPIC = "{U_VIEW_TOPIC}".split("viewtopic.php");
-</script>
-
 <!-- IF W3AVR_MODEON_VIEWTOPIC or S_QUICK_REPLY -->
 <div id="w3PlayContainer" class="w3PlayContainer text-center inputbox" style="display:none"><br /><br /><ul id="w3playlistAll" style="list-style:none;"></ul></div>
 
@@ -515,11 +510,6 @@ if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'repl
      //console.log("XHRstarting -> "+XHR.response);
     } else if (XHR.readyState === 3) {
     	//console.log("XHRwaiting -> "+XHR.response);
-    	if(/W3ERRORAV|404/ig.exec(XHR.response) !== null )
-    	{
- 		   alert('Error');
- 		   return;
-      }
     } else if (XHR.readyState === 4) { // onload 
       if(task == 'doAttach'){
        w3_AUres_ajaxup(XHR.response);
