@@ -93,15 +93,14 @@ if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
  function w3APlayAllSeqListenerRemPrev(event){
  	
  	if( w3currPlaying != event.target.id && w3currPlaying != 0 ){
- 		var rem = document.getElementById(w3currPlaying);
- 		rem.pause();
-    rem.src = rem.src;
+ 	  var rem = document.getElementById(w3currPlaying);
+ 	  rem.pause();
+          rem.src = rem.src;
  	}
  	 w3currPlaying = event.target.id;
  }
  
  function w3APlayAllSeqListener(event){
- 	//var eti = event.target.id;
      // console.log(event);
  	var apid = event.target.id.split('-');
  	apid = apid[1];
