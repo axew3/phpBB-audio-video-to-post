@@ -33,15 +33,17 @@ class main_listener implements EventSubscriberInterface
 
 	protected $language;
 	protected $template;
+	protected $request;
 	protected $php_ext;
 
 	/**
 	 * Constructor
 	 */
-	public function __construct(\phpbb\language\language $language, \phpbb\template\template $template, $php_ext)
+	public function __construct(\phpbb\language\language $language, \phpbb\template\template $template, \phpbb\request\request_interface $request, $php_ext)
 	{
 		$this->language = $language;
 		$this->template = $template;
+		$this->request = $request;
 		$this->php_ext  = $php_ext;
 	}
 
@@ -66,7 +68,15 @@ class main_listener implements EventSubscriberInterface
    // usernames/postID pairs
 		foreach($e['rowset'] as $k => $v){
 			$pidUA[$v['post_id']] = $v['username'];
-		}
+		}	
+
+		// if on viewtopic
+	if( strpos($this->request->server('REQUEST_URI'), 'viewtopic.php') === false ){
+            $viewtopic = '';
+	  } else 
+	   {
+	    $viewtopic = 1;
+	   }
 		
 		/*
 		                [attach_id] => 202
@@ -91,8 +101,7 @@ class main_listener implements EventSubscriberInterface
 	 // unset 'physical_filename' on resulting array
  
  // rebuild the same, but remove physical_filename
-	if( !empty($e['attachments']) )
-	{
+	if( !empty($e['attachments']) ){
 
 	 	$posts_attachments_ary = $post_subary = array();
 	 	$i=0;
@@ -120,21 +129,23 @@ class main_listener implements EventSubscriberInterface
 		 }
     }
 
-   if(!empty($posts_attachments_ary)){
-    $posts_attachments_ary = json_encode($posts_attachments_ary,  JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES);
-    $posts_attachments_ary = base64_encode($posts_attachments_ary); 
-   } else { 
-  	  $posts_attachments_ary = ''; 
-  	 }
+  if(!empty($posts_attachments_ary)){
+   $posts_attachments_ary = json_encode($posts_attachments_ary,  JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES);
+   $posts_attachments_ary = base64_encode($posts_attachments_ary); 
+  } else { 
+  	$posts_attachments_ary = ''; 
+  	}
 
    $pidUA = json_encode($pidUA,  JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES);
    $pidUA = base64_encode($pidUA);
 
 		$this->template->assign_vars(array( 
 		 'W3ALL_AV_POST_ATTACHMENTS_ARY'	=> $posts_attachments_ary,
+		 'W3AVR_MODEON_VIEWTOPIC'	=> $viewtopic,
 		 'W3AVR_USERS_APOST_OWN'	=> $pidUA,
 		 'W3AVR_POSTS_IDS_SEQ'	=> $pid_seq,
     ));
+	 
   }
 }
 
