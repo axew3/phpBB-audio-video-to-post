@@ -23,9 +23,9 @@ class main_listener implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return array(
-			'core.user_setup'  => 'load_language_on_setup',
-			'core.page_head'	=> 'overall_header_head_append',
-			'core.page_footer'	=> 'overall_footer_body_after',
+			'core.user_setup' => 'load_language_on_setup',
+			'core.page_head' => 'overall_header_head_append',
+			'core.page_footer' => 'overall_footer_body_after',
 			'core.viewtopic_modify_post_data' => 'viewtopic_modify_post_data',
 
 		);
@@ -43,7 +43,7 @@ class main_listener implements EventSubscriberInterface
 	{
 		$this->language = $language;
 		$this->template = $template;
-		$this->request = $request;
+		$this->request  = $request;
 		$this->php_ext  = $php_ext;
 	}
 
@@ -54,23 +54,23 @@ class main_listener implements EventSubscriberInterface
 	 */
 	public function load_language_on_setup($event)
 	{
-           $lang_set_ext = $event['lang_set_ext'];
-           $lang_set_ext[] = array(
-           'ext_name' => 'w3all/w3audiovideotopost',
-           'lang_set' => 'common',
-           );
-	  $event['lang_set_ext'] = $lang_set_ext;
+		$lang_set_ext = $event['lang_set_ext'];
+		$lang_set_ext[] = array(
+			'ext_name' => 'w3all/w3audiovideotopost',
+			'lang_set' => 'common',
+		);
+		$event['lang_set_ext'] = $lang_set_ext;
 	}
 
 	public function viewtopic_modify_post_data($e)
 	{
 
-          // usernames/postID pairs
-	  foreach($e['rowset'] as $k => $v){
-	    $pidUA[$v['post_id']] = $v['username'];
-	  }	
+   // usernames/postID pairs
+		foreach($e['rowset'] as $k => $v){
+			$pidUA[$v['post_id']] = $v['username'];
+		}	
 
-         // if on viewtopic
+   // if on viewtopic
 	if( strpos($this->request->server('REQUEST_URI'), 'viewtopic.php') === false ){
             $viewtopic = '';
 	  } else 
@@ -79,7 +79,7 @@ class main_listener implements EventSubscriberInterface
 	   }
 		
 		/*
-                    [attach_id] => 202
+		    [attach_id] => 202
                     [post_msg_id] => 16
                     [topic_id] => 6
                     [in_message] => 0
@@ -101,21 +101,20 @@ class main_listener implements EventSubscriberInterface
 	 // unset 'physical_filename' on resulting array
  
  // rebuild the same, but remove physical_filename
-    if( !empty($e['attachments']) ){
-
-     $posts_attachments_ary = $post_subary = array();
-     $i=0;
-        foreach( $e['attachments'] as $k => $v ){
+	if( !empty($e['attachments']) ){
+	 $posts_attachments_ary = $post_subary = array();
+	 $i=0;
+	  foreach( $e['attachments'] as $k => $v ){
 	   foreach( $v as $kk ){
 	    if( $kk['extension'] == 'mp3' && $kk['is_orphan'] == 0 ){
 	    	unset($kk['physical_filename']);
 	    	$post_subary[$i] = $kk;
 	    	$i++;
-                $posts_attachments_ary[$k] = $post_subary;
+       $posts_attachments_ary[$k] = $post_subary;
 	    }
-           }
-         $post_subary = array(); $i = 0;
-        }
+     }
+     $post_subary = array(); $i = 0;
+    }
 
    // Due to above. If the post contain more than an mp3 (or any other attach) the phpBB array come with attachments ordered 
    // with the last inserted, on index 0, the previous on 1 etc. This cause that a post that contain more than one attachment
@@ -139,29 +138,27 @@ class main_listener implements EventSubscriberInterface
    $pidUA = json_encode($pidUA,  JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES);
    $pidUA = base64_encode($pidUA);
 
-     $this->template->assign_vars(array( 
-      'W3ALL_AV_POST_ATTACHMENTS_ARY' => $posts_attachments_ary,
-      'W3AVR_MODEON_VIEWTOPIC' => $viewtopic,
-      'W3AVR_USERS_APOST_OWN' => $pidUA,
+		$this->template->assign_vars(array( 
+		 'W3ALL_AV_POST_ATTACHMENTS_ARY'	=> $posts_attachments_ary,
+		 'W3AVR_MODEON_VIEWTOPIC'	=> $viewtopic,
+		 'W3AVR_USERS_APOST_OWN'	=> $pidUA,
     ));
 	 
   }
 }
 
 
-    public function overall_footer_body_after()
-    {
-      $w3mode = $this->request->variable('mode', '');
+	public function overall_footer_body_after()
+	{
+		$w3mode = $this->request->variable('mode', '');
 
-       if( $w3mode != 'edit' && $w3mode != 'post' && $w3mode != 'reply' )
-       { 
-        $w3mode = '';
-       }
+		if( $w3mode != 'edit' && $w3mode != 'post' && $w3mode != 'reply' ){ 
+			$w3mode = '';
+		}
 
-	    $this->template->assign_vars(array( 
-	     'W3ALLREQ_MODE'	=> $w3mode,
-	     'W3AVR_MODEON'	=> $w3mode,
-            ));
-     }
+		$this->template->assign_vars(array( 
+		 'W3ALLREQ_MODE'	=> $this->request->variable('mode', ''),
+                ));
+        }
 
 }
