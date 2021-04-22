@@ -150,12 +150,6 @@ class main_listener implements EventSubscriberInterface
 
 	public function overall_footer_body_after()
 	{
-		$w3mode = $this->request->variable('mode', '');
-
-		if( $w3mode != 'edit' && $w3mode != 'post' && $w3mode != 'reply' ){ 
-			$w3mode = '';
-		}
-
 		$this->template->assign_vars(array( 
 		 'W3ALLREQ_MODE'	=> $this->request->variable('mode', ''),
                 ));
