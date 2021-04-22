@@ -275,7 +275,6 @@ if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
 
 
 <!-- IF W3ALLREQ_MODE -->
-
  <div id="w3RecContainer" class="w3RecContainer text-center inputbox" style="display:none"><br /><button id="w3recAbutt" class="btn btn-primary button">Start recording</button><br /><button id="w3RecOnbutton" class="w3RecOn" style="display:none">Recording</button><br /><ul id="w3playlist" style="list-style:none;"></ul><br /><div class="attachNWrap" style="display:none">attach name (optional) max 120 chars <input type="text" id="w3recAname" class="inputbox" name="w3recAname" minlength="4" maxlength="120" size="30" placeholder="Only letters, numbers and - (hyphen)" /></div><br/><button id="w3allAVdo" style="display:none" class="button button-icon-only">Attach audio</button>&nbsp; <button id="w3allAVdel" style="display:none" class="button button-icon-only">X</button><div id="w3avpreloader" class="w3avpreloader" style="display:none"><div></div>
 
 <!-- <script src="{BOARD_URL}ext/w3all/w3audiovideotopost/styles/prosilver/template/js/adapter-master/release/adapter.js"></script> -->
@@ -287,7 +286,8 @@ if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
 // Only if in 'posting, edit or reply mode'
 
   const W3ALLREQ_MODE = "{W3ALLREQ_MODE}";
-
+  const W3ALLMAX_ATTACHDIM = "{W3ALLMAX_ATTACHDIM}";
+  //if (file.size > type.max_file_size) {
 if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'reply' ){
 	
 // AV buttons 
@@ -368,6 +368,7 @@ if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'repl
  // output response errors, if there are
 	res_a = r.split("//#//");
  if( typeof res_a[0] != "undefined" && /W3ERRORAV:|FORBIDDEN:/ig.exec(res_a[0]) !== null ){
+ 	  $("#w3avpreloader").css("display","none");
  		 alert(res_a[0]);
  		 return;
  }
@@ -538,6 +539,13 @@ if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'repl
    recorder.stop().getMp3().then(([buffer, blob]) => {
        // console.log(buffer, blob);
         w3blobAV = blob; // put the blob into w3blobAV
+    if(w3blobAV.size > W3ALLMAX_ATTACHDIM)
+    {
+     alert('Recorded file is too large');
+    }
+       
+  if(w3blobAV.size < W3ALLMAX_ATTACHDIM)
+  {       
         const file = new File(buffer, 'audio.mp3', {
           type: blob.type,
           lastModified: Date.now()
@@ -554,11 +562,12 @@ if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'repl
    document.getElementById("w3recAbutt").setAttribute("disabled", "true");
    document.getElementById("w3recAbutt").setAttribute("style", "opacity: 0.6;");
  
-  const li = document.createElement('li');
-  const player = new Audio(URL.createObjectURL(file));
-  player.controls = true;
-  li.appendChild(player);
-  document.querySelector('#w3playlist').appendChild(li);
+   const li = document.createElement('li');
+   const player = new Audio(URL.createObjectURL(file));
+   player.controls = true;
+   li.appendChild(player);
+   document.querySelector('#w3playlist').appendChild(li);
+ }
   w3RecOnButPulse.setAttribute("style", "display:none");
   w3recAbutt.textContent = 'Start recording';
   w3recAbutt.removeEventListener('click', stopRecording);
