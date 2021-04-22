@@ -143,7 +143,6 @@ class main_listener implements EventSubscriberInterface
       'W3ALL_AV_POST_ATTACHMENTS_ARY' => $posts_attachments_ary,
       'W3AVR_MODEON_VIEWTOPIC' => $viewtopic,
       'W3AVR_USERS_APOST_OWN' => $pidUA,
-      'W3AVR_POSTS_IDS_SEQ' => $pid_seq,
     ));
 	 
   }
