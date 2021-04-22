@@ -101,21 +101,21 @@ class main_listener implements EventSubscriberInterface
 	 // unset 'physical_filename' on resulting array
  
  // rebuild the same, but remove physical_filename
-	if( !empty($e['attachments']) ){
+    if( !empty($e['attachments']) ){
 
-	 	$posts_attachments_ary = $post_subary = array();
-	 	$i=0;
-	 	foreach( $e['attachments'] as $k => $v ){
+     $posts_attachments_ary = $post_subary = array();
+     $i=0;
+        foreach( $e['attachments'] as $k => $v ){
 	   foreach( $v as $kk ){
 	    if( $kk['extension'] == 'mp3' && $kk['is_orphan'] == 0 ){
 	    	unset($kk['physical_filename']);
 	    	$post_subary[$i] = $kk;
 	    	$i++;
-       $posts_attachments_ary[$k] = $post_subary;
+                $posts_attachments_ary[$k] = $post_subary;
 	    }
-     }
-     $post_subary = array(); $i = 0;
-    }
+           }
+         $post_subary = array(); $i = 0;
+        }
 
    // Due to above. If the post contain more than an mp3 (or any other attach) the phpBB array come with attachments ordered 
    // with the last inserted, on index 0, the previous on 1 etc. This cause that a post that contain more than one attachment
