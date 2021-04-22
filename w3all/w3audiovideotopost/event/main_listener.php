@@ -65,14 +65,14 @@ class main_listener implements EventSubscriberInterface
 	public function viewtopic_modify_post_data($e)
 	{
 
-   // usernames/postID pairs
-		foreach($e['rowset'] as $k => $v){
-			$pidUA[$v['post_id']] = $v['username'];
-		}	
+          // usernames/postID pairs
+	  foreach($e['rowset'] as $k => $v){
+	    $pidUA[$v['post_id']] = $v['username'];
+	  }	
 
 		// if on viewtopic
 	if( strpos($this->request->server('REQUEST_URI'), 'viewtopic.php') === false ){
-     $viewtopic = '';
+            $viewtopic = '';
 	  } else 
 	   {
 	    $viewtopic = 1;
@@ -139,29 +139,30 @@ class main_listener implements EventSubscriberInterface
    $pidUA = json_encode($pidUA,  JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES);
    $pidUA = base64_encode($pidUA);
 
-		$this->template->assign_vars(array( 
-		 'W3ALL_AV_POST_ATTACHMENTS_ARY'	=> $posts_attachments_ary,
-		 'W3AVR_MODEON_VIEWTOPIC'	=> $viewtopic,
-		 'W3AVR_USERS_APOST_OWN'	=> $pidUA,
-		 'W3AVR_POSTS_IDS_SEQ'	=> $pid_seq,
+     $this->template->assign_vars(array( 
+      'W3ALL_AV_POST_ATTACHMENTS_ARY' => $posts_attachments_ary,
+      'W3AVR_MODEON_VIEWTOPIC' => $viewtopic,
+      'W3AVR_USERS_APOST_OWN' => $pidUA,
+      'W3AVR_POSTS_IDS_SEQ' => $pid_seq,
     ));
 	 
   }
 }
 
 
-	public function overall_footer_body_after()
-	{
-		$w3mode = $this->request->variable('mode', '');
+    public function overall_footer_body_after()
+    {
+      $w3mode = $this->request->variable('mode', '');
 
-		if( $w3mode != 'edit' && $w3mode != 'post' && $w3mode != 'reply' ){ 
-			$w3mode = '';
-		}
+       if( $w3mode != 'edit' && $w3mode != 'post' && $w3mode != 'reply' )
+       { 
+        $w3mode = '';
+       }
 
-		$this->template->assign_vars(array( 
-		 'W3ALLREQ_MODE'	=> $w3mode,
-		 'W3AVR_MODEON'	=> $w3mode,
-    ));
-  }
+	    $this->template->assign_vars(array( 
+	     'W3ALLREQ_MODE'	=> $w3mode,
+	     'W3AVR_MODEON'	=> $w3mode,
+            ));
+     }
 
 }
