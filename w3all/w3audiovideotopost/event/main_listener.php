@@ -157,7 +157,7 @@ class main_listener implements EventSubscriberInterface
 	public function overall_footer_body_after()
 	{
 	  $this->template->assign_vars(array( 
-	  'W3ALLREQ_MODE'	=> $this->request->variable('mode', ''),
+	  'W3ALLREQ_MODE' => $this->request->variable('mode', ''),
          ));
         }
 
