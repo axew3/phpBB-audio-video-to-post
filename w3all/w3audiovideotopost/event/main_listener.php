@@ -62,15 +62,15 @@ class main_listener implements EventSubscriberInterface
 		$event['lang_set_ext'] = $lang_set_ext;
 	}
 
-	public function viewtopic_modify_post_data($e)
-	{
+    public function viewtopic_modify_post_data($e)
+    {
 
-   // usernames/postID pairs
+      // usernames/postID pairs
            foreach($e['rowset'] as $k => $v){
             $pidUA[$v['post_id']] = $v['username'];
            }	
 
-		// if on viewtopic
+      // if on viewtopic
 	if( strpos($this->request->server('REQUEST_URI'), 'viewtopic.php') === false ){
             $viewtopic = '';
 	  } else 
