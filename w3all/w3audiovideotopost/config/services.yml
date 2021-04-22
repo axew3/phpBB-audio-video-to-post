@@ -3,6 +3,7 @@ services:
         class: w3all\w3audiovideotopost\event\main_listener
         arguments:
             - '@language'
+            - '@config'
             - '@template'
             - '@request'
             - '%core.php_ext%'
