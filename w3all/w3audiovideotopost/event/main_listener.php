@@ -52,18 +52,18 @@ class main_listener implements EventSubscriberInterface
 	 *
 	 * @param \phpbb\event\data	$event	Event object
 	 */
-	public function load_language_on_setup($event)
-	{
-		$lang_set_ext = $event['lang_set_ext'];
-		$lang_set_ext[] = array(
-                 'ext_name' => 'w3all/w3audiovideotopost',
-                 'lang_set' => 'common',
-		);
-		$event['lang_set_ext'] = $lang_set_ext;
-	}
+ public function load_language_on_setup($event)
+  {
+    $lang_set_ext = $event['lang_set_ext'];
+    $lang_set_ext[] = array(
+    'ext_name' => 'w3all/w3audiovideotopost',
+    'lang_set' => 'common',
+    );
+     $event['lang_set_ext'] = $lang_set_ext;
+   }
 
-    public function viewtopic_modify_post_data($e)
-    {
+  public function viewtopic_modify_post_data($e)
+  {
 
       // usernames/postID pairs
            foreach($e['rowset'] as $k => $v){
