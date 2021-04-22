@@ -56,8 +56,8 @@ class main_listener implements EventSubscriberInterface
 	{
 		$lang_set_ext = $event['lang_set_ext'];
 		$lang_set_ext[] = array(
-			'ext_name' => 'w3all/w3audiovideotopost',
-			'lang_set' => 'common',
+                 'ext_name' => 'w3all/w3audiovideotopost',
+                 'lang_set' => 'common',
 		);
 		$event['lang_set_ext'] = $lang_set_ext;
 	}
@@ -66,20 +66,20 @@ class main_listener implements EventSubscriberInterface
 	{
 
    // usernames/postID pairs
-		foreach($e['rowset'] as $k => $v){
-			$pidUA[$v['post_id']] = $v['username'];
-		}	
+           foreach($e['rowset'] as $k => $v){
+            $pidUA[$v['post_id']] = $v['username'];
+           }	
 
 		// if on viewtopic
 	if( strpos($this->request->server('REQUEST_URI'), 'viewtopic.php') === false ){
-     $viewtopic = '';
+            $viewtopic = '';
 	  } else 
 	   {
 	    $viewtopic = 1;
 	   }
 		
 		/*
-		                [attach_id] => 202
+                    [attach_id] => 202
                     [post_msg_id] => 16
                     [topic_id] => 6
                     [in_message] => 0
