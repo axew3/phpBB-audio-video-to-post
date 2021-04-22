@@ -2,8 +2,7 @@
 <div id="w3PlayContainer" class="w3PlayContainer text-center inputbox" style="display:none"><br /><br /><ul id="w3playlistAll" style="list-style:none;"></ul></div>
 
 <script>
- // @copyright (c) 2021 axew3 -> http://axew3.com
-	
+// @copyright (c) 2021 axew3, http://axew3.com
   const W3ALL_AV_POST_ATTACHMENTS_ARY = "{W3ALL_AV_POST_ATTACHMENTS_ARY}";
   const W3AVR_USERS_APOST_OWN = "{W3AVR_USERS_APOST_OWN}";
   
@@ -93,14 +92,15 @@ if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
  function w3APlayAllSeqListenerRemPrev(event){
  	
  	if( w3currPlaying != event.target.id && w3currPlaying != 0 ){
- 	  var rem = document.getElementById(w3currPlaying);
- 	  rem.pause();
-          rem.src = rem.src;
+ 		var rem = document.getElementById(w3currPlaying);
+ 		rem.pause();
+    rem.src = rem.src;
  	}
  	 w3currPlaying = event.target.id;
  }
  
  function w3APlayAllSeqListener(event){
+ 	//var eti = event.target.id;
      // console.log(event);
  	var apid = event.target.id.split('-');
  	apid = apid[1];
@@ -128,7 +128,6 @@ if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
  }
  
 
-
   function w3AVPushRowPlayer(pRow){
 
   	var totB = Object.keys(pRow).length;
@@ -139,7 +138,8 @@ if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
   	
  	   // push the audio player row
  	    var li = document.createElement('li');
- 	    // add EXT
+ 	    li.setAttribute("class", 'w3playlist');
+ 	    // add EXT.
  	    var furl = "{BOARD_URL}download/file.php?id=" + pRow[i]['attach_id'];
       const player = new Audio(furl);
       player.controls = true;
@@ -160,6 +160,7 @@ if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
       liuname.innerHTML += im;
       li.appendChild(liuname);
       document.querySelector('#w3playlistAll').appendChild(li);
+
 
  	  }
  	 }
@@ -188,7 +189,7 @@ if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
   $("#w3PlayContainer > *").each(function () {
   totalHeight = $(this).height();
   });
-  $("#w3PlayContainer").css({ "height" : 20+totalHeight, "maxHeight" : "350px" });
+  $("#w3PlayContainer").css({ "height" : 30+totalHeight, "maxHeight" : "350px" });
    
   $( "audio" ).each(function () {
  	 $(this).attr("preload","auto");
@@ -216,7 +217,9 @@ if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
   	var ext1 = this.text.substr(this.text.length - 4); // webm etc
   	
   	 // Only mp3 considered at moment
-     if(ext0 != 'mp3'){ return; }
+     if(ext0 != 'mp3'){
+  	  return;
+     }
   
    e.preventDefault(e);
    e.stopPropagation(e);
@@ -275,9 +278,10 @@ if( W3ALL_AV_POST_ATTACHMENTS_ARY != '' ){
 
  <div id="w3RecContainer" class="w3RecContainer text-center inputbox" style="display:none"><br /><button id="w3recAbutt" class="btn btn-primary button">Start recording</button><br /><button id="w3RecOnbutton" class="w3RecOn" style="display:none">Recording</button><br /><ul id="w3playlist" style="list-style:none;"></ul><br /><div class="attachNWrap" style="display:none">attach name (optional) max 120 chars <input type="text" id="w3recAname" class="inputbox" name="w3recAname" minlength="4" maxlength="120" size="30" placeholder="Only letters, numbers and - (hyphen)" /></div><br/><button id="w3allAVdo" style="display:none" class="button button-icon-only">Attach audio</button>&nbsp; <button id="w3allAVdel" style="display:none" class="button button-icon-only">X</button><div id="w3avpreloader" class="w3avpreloader" style="display:none"><div></div>
 
- <script src="{BOARD_URL}ext/w3all/w3audiovideotopost/styles/prosilver/template/js/adapter-master/release/adapter.js"></script>
+<!-- <script src="{BOARD_URL}ext/w3all/w3audiovideotopost/styles/prosilver/template/js/adapter-master/release/adapter.js"></script> -->
  <script src="{BOARD_URL}ext/w3all/w3audiovideotopost/styles/prosilver/template/js/mic-recorder-to-mp3/dist/index.js"></script>
 
+<!-- IF S_SHOW_ATTACH_BOX and FILTERS -->
 <script>
 // Copyright -> axew3.com 
 // Only if in 'posting, edit or reply mode'
@@ -611,5 +615,5 @@ if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'repl
 } // END fire only if in 'posting, reply or edit mode'
 
 </script>
-
+<!-- ENDIF -->
 <!-- ENDIF -->
