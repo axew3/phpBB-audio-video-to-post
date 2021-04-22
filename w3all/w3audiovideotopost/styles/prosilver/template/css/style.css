@@ -20,13 +20,14 @@
  left:0px;
  margin:auto;
  z-index:99999;
- width:350px;
+ width:400px;
  height:400px;
  overflow:auto;
  text-align:center;
 }
 
 #w3playlistAll > li{
+padding:8px;
 margin: 0 0 20px 0;
 }
 
