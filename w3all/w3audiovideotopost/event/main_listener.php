@@ -54,12 +54,12 @@ class main_listener implements EventSubscriberInterface
 	 */
 	public function load_language_on_setup($event)
 	{
-		$lang_set_ext = $event['lang_set_ext'];
-		$lang_set_ext[] = array(
-			'ext_name' => 'w3all/w3audiovideotopost',
-			'lang_set' => 'common',
-		);
-		$event['lang_set_ext'] = $lang_set_ext;
+           $lang_set_ext = $event['lang_set_ext'];
+           $lang_set_ext[] = array(
+           'ext_name' => 'w3all/w3audiovideotopost',
+           'lang_set' => 'common',
+           );
+	  $event['lang_set_ext'] = $lang_set_ext;
 	}
 
 	public function viewtopic_modify_post_data($e)
@@ -70,7 +70,7 @@ class main_listener implements EventSubscriberInterface
 	    $pidUA[$v['post_id']] = $v['username'];
 	  }	
 
-		// if on viewtopic
+         // if on viewtopic
 	if( strpos($this->request->server('REQUEST_URI'), 'viewtopic.php') === false ){
             $viewtopic = '';
 	  } else 
@@ -79,7 +79,7 @@ class main_listener implements EventSubscriberInterface
 	   }
 		
 		/*
-		                [attach_id] => 202
+                    [attach_id] => 202
                     [post_msg_id] => 16
                     [topic_id] => 6
                     [in_message] => 0
