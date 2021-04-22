@@ -152,10 +152,7 @@ class main_listener implements EventSubscriberInterface
 
 	public function overall_footer_body_after()
 	{
-		global $config, $request;
-		$w3mode = $request->variable('mode', '');
-
-    //$w3cookieDomain = $config['cookie_domain'][0] == '.' ? substr($config['cookie_domain'], 1) : $config['cookie_domain'];
+		$w3mode = $this->request->variable('mode', '');
 
 		if( $w3mode != 'edit' && $w3mode != 'post' && $w3mode != 'reply' ){ 
 			$w3mode = '';
@@ -164,7 +161,6 @@ class main_listener implements EventSubscriberInterface
 		$this->template->assign_vars(array( 
 		 'W3ALLREQ_MODE'	=> $w3mode,
 		 'W3AVR_MODEON'	=> $w3mode,
-		 //'W3COOKIEDOMAIN'	=> $w3cookieDomain,
     ));
   }
 
