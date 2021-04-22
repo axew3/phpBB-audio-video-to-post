@@ -16,10 +16,8 @@ define('IN_PHPBB', true);
 
 ///////////////////
 //
-
-// $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../../../../';
 // Define the root from here
-$phpbb_root_path = './../../../../';
+$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../../../../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
 //
@@ -48,7 +46,6 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
 
  $phpbb_content_visibility = $phpbb_container->get('content.visibility');
  
-
  $request	= $phpbb_container->get('request');
  $ajaxAdata = $request->variable('data', '');
  $ajaxAdatadel = $request->variable('data_attach_del', '');
@@ -71,8 +68,6 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
  	  echo'W3ERRORAV: NO AV DATA';
 	  exit;  	
    }
-
-  // echo 'wanted file name is ' .$ajaxAdata[2];
    
    if( isset($ajaxAdata[2]) && !empty($ajaxAdata[2]) && strlen($ajaxAdata[2]) > 2 )
    {
@@ -83,6 +78,11 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
     } else {
     	  $real_filename = $ajaxAdata[2] . '.mp3';
       }
+      
+    if( strlen($real_filename) > 255 ){
+  	 $real_filename = $user->data['user_id'] . '_' . bin2hex(random_bytes(4)) . '.mp3';
+  	  exit;
+    }  
    } else {
    	        $real_filename = $user->data['user_id'] . '_' . bin2hex(random_bytes(4)) . '.mp3';
    	      } 
@@ -189,6 +189,12 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
  
  $physical_filename_rand = $user->data['user_id'] . '_s1_' . substr(md5(bin2hex(random_bytes(16))), 2) . substr(time(), 2);
  $audioDataIns = base64_decode($audioData);
+
+  if( strlen($audioDataIns) > $config['max_filesize'] ){
+   echo'W3ERRORAV: FILE DATA IS TOO BIG';
+	 exit;
+  }
+ 
  $phpBBfilesFAN = $phpbb_root_path . $config['upload_path']. '/' . $physical_filename_rand;
 
  if(! file_put_contents($phpBBfilesFAN, $audioDataIns) ){
