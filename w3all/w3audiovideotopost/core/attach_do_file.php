@@ -81,7 +81,6 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
       
     if( strlen($real_filename) > 255 ){
   	 $real_filename = $user->data['user_id'] . '_' . bin2hex(random_bytes(4)) . '.mp3';
-  	  exit;
     }  
    } else {
    	        $real_filename = $user->data['user_id'] . '_' . bin2hex(random_bytes(4)) . '.mp3';
