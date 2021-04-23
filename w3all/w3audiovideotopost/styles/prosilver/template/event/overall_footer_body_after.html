@@ -539,7 +539,7 @@ if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'repl
    recorder.stop().getMp3().then(([buffer, blob]) => {
        // console.log(buffer, blob);
         w3blobAV = blob; // put the blob into w3blobAV
-    if(w3blobAV.size > W3ALLMAX_ATTACHDIM)
+   if(w3blobAV.size > W3ALLMAX_ATTACHDIM && W3ALLMAX_ATTACHDIM > 1 )
     {
      alert('Recorded file is too large');
     }
