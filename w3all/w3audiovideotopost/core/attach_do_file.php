@@ -19,7 +19,7 @@ define('IN_PHPBB', true);
 // Define the root from here
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../../../../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
-//
+
 //
 ///////////////////
 
@@ -189,7 +189,8 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
  $physical_filename_rand = $user->data['user_id'] . '_s1_' . substr(md5(bin2hex(random_bytes(16))), 2) . substr(time(), 2);
  $audioDataIns = base64_decode($audioData);
 
-  if( strlen($audioDataIns) > $config['max_filesize'] ){
+  if( strlen($audioDataIns) > $config['max_filesize'] && $config['max_filesize'] > 0 )
+  {
    echo'W3ERRORAV: FILE DATA IS TOO BIG';
 	 exit;
   }
