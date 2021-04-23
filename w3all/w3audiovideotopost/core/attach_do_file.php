@@ -156,10 +156,11 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
   
  // If there are permissions over this file
   $own_attachment = ($auth->acl_get('a_attach') || $attachment['poster_id'] == $user->data['user_id']) ? true : false;
-	if (!$own_attachment) {
-		 echo 'W3ERRORAV: you have no permissions over this file';
+	if (!$own_attachment) 
+	{
+	 echo 'W3ERRORAV: you have no permissions over this file';
   	 exit;
-		}
+	}
   
   
  $sql = 'SELECT * 
@@ -192,14 +193,14 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
   if( strlen($audioDataIns) > $config['max_filesize'] && $config['max_filesize'] > 0 )
   {
    echo'W3ERRORAV: FILE DATA IS TOO BIG';
-	 exit;
+   exit;
   }
  
  $phpBBfilesFAN = $phpbb_root_path . $config['upload_path']. '/' . $physical_filename_rand;
 
  if(! file_put_contents($phpBBfilesFAN, $audioDataIns) ){
-	 echo'W3ERRORAV: CANNOT SAVE FILE';
-	 exit;
+   echo'W3ERRORAV: CANNOT SAVE FILE';
+   exit;
   } else {
   	
   // Add the new attach into db
