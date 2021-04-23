@@ -544,8 +544,9 @@ if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'repl
      alert('Recorded file is too large');
     }
        
-  if(w3blobAV.size < W3ALLMAX_ATTACHDIM)
-  {       
+    // W3ALLMAX_ATTACHDIM < 1: ther is no limit for the file dimension
+  if( w3blobAV.size < W3ALLMAX_ATTACHDIM || W3ALLMAX_ATTACHDIM < 1 )
+  {      
         const file = new File(buffer, 'audio.mp3', {
           type: blob.type,
           lastModified: Date.now()
