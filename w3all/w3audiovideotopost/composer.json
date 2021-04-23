@@ -3,7 +3,7 @@
     "type": "phpbb-extension",
     "description": "Audio Player and Recorder on Posts",
     "homepage": "http://www.axew3.com",
-    "version": "1.0.0-dev",
+    "version": "1.0.4-dev",
     "time": "2021-04-21",
     "license": "GPL-2.0-only",
     "authors": [
