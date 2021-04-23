@@ -45,13 +45,13 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
 
  $phpbb_content_visibility = $phpbb_container->get('content.visibility');
  
- $request	= $phpbb_container->get('request');
+ $request = $phpbb_container->get('request');
  $ajaxAdata = $request->variable('data', '');
  $ajaxAdatadel = $request->variable('data_attach_del', '');
 
   if( empty($ajaxAdata) && empty($ajaxAdatadel) ){
- 		 echo'W3ERRORAV: NO AJAX DATA';
-	 exit;
+    echo'W3ERRORAV: NO AJAX DATA';
+    exit;
   }
 
   if( !empty($ajaxAdata) ){
