@@ -177,8 +177,8 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
   
   
    $sql = 'DELETE FROM ' . ATTACHMENTS_TABLE . "
-					WHERE attach_id = $fid";
-					$db->sql_query($sql);
+    WHERE attach_id = $fid";
+    $db->sql_query($sql);
   
    echo 'FILEDELETED: ID ' . $fid; 
    exit;
@@ -206,7 +206,7 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
  
   $filesize = @filesize($phpBBfilesFAN);
    if(!$filesize){
-  	 echo'W3ERRORAV: FILESIZE';
+  	 echo'W3ERRORAV: FILESIZE NO DATA';
   	 @unlink($phpBBfilesFAN);
   	 exit;
 	 }
