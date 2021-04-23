@@ -107,7 +107,7 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
     }
 
    if ( $fid < 1 ){
-  	echo 'ERROR: file ID too small';
+  	echo 'W3ERRORAV: file ID too small';
   	exit;
    }
     
