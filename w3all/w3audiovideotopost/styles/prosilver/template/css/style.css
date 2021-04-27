@@ -7,7 +7,7 @@
  margin:auto;
  z-index:99999;
  width:320px;
- height:190px;
+ height:230px;
  overflow:auto;
  text-align:center;
 }
@@ -29,6 +29,35 @@
 #w3playlistAll > li{
 padding:8px;
 margin: 0 0 20px 0;
+}
+
+.w3checkStreamOut{
+padding-top:15px;
+}
+
+.w3wrapRecChildsTab{
+min-height:100%;
+min-width:100%;
+}
+
+.w3wrapRecChildsTd{
+vartical-align:middle;
+}
+
+audio{
+  width:90%;
+}
+
+progress {
+  -webkit-appearance: none;
+  width:40%;
+  height:6px;
+  border:1px solid #999;
+  border-radius:3px;
+  background-color: transparent;
+}
+progress::-webkit-progress-bar {
+ background-color: transparent;
 }
 
 /* Preloader while file saving */
@@ -56,32 +85,32 @@ margin: 0 0 20px 0;
 
 /* Recording round button pulse */
 #w3RecOnbutton {
-	width: 50px;
-	height: 50px;
-	font-size: 0;
-	background-color: #FF0040;
-	border: 0;
-	border-radius: 35px;
-	margin: 18px;
-	outline: none;
+  width: 50px;
+  height: 50px;
+  font-size: 0;
+  background-color: #FF0040;
+  border: 0;
+  border-radius: 35px;
+  margin: 18px;
+  outline: none;
 }
 
 
 .w3RecOn{
-	animation-name: pulse;
-	animation-duration: 1.5s;
-	animation-iteration-count: infinite;
-	animation-timing-function: linear;
+  animation-name: pulse;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
 @keyframes pulse{
-	0%{
-		box-shadow: 0px 0px 5px 0px rgba(173,0,0,.3);
-	}
-	65%{
-		box-shadow: 0px 0px 5px 13px rgba(173,0,0,.3);
-	}
-	90%{
-		box-shadow: 0px 0px 5px 13px rgba(173,0,0,0);
-	}
-}	
+  0%{
+    box-shadow: 0px 0px 5px 0px rgba(173,0,0,.3);
+  }
+  65%{
+    box-shadow: 0px 0px 5px 13px rgba(173,0,0,.3);
+  }
+  90%{
+    box-shadow: 0px 0px 5px 13px rgba(173,0,0,0);
+  }
+}
