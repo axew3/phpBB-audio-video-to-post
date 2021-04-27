@@ -8,6 +8,18 @@
 *
 */
 
+// note that errors output may do not need to contain the word 'error' due to js code executed on response
+
+ // Check the POST request. If there are any, cleanup
+  ob_get_contents();
+  ob_end_clean();
+ // check 
+  if($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST) && $_SERVER['CONTENT_LENGTH'] > 0)
+  { 
+    echo'W3ERRORAV: POST data may exceed the limit or something else on request goes wrong';
+    exit;
+  }
+
 /**
 * @ignore
 */
@@ -50,7 +62,7 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
  $ajaxAdatadel = $request->variable('data_attach_del', '');
 
   if( empty($ajaxAdata) && empty($ajaxAdatadel) ){
-    echo'W3ERRORAV: NO AJAX DATA';
+    echo'W3ERRORAV: No AJAX data';
     exit;
   }
 
@@ -62,9 +74,9 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
    if(isset($ajaxAdata[1])){ 
     $audioData = str_replace(chr(0), '', $ajaxAdata[1]);
    }
-  
+
    if(empty($ajaxAdata[1])){
- 	  echo'W3ERRORAV: NO AV DATA';
+ 	  echo'W3ERRORAV: No Audio data';
 	  exit;  	
    }
    
@@ -101,18 +113,18 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
    unset($ajaxAdatadel);
    
     if( preg_match('/[^0-9A-Za-z]/',$w3usession) OR preg_match('/[^0-9A-Za-z]/',$w3formtoken) OR preg_match('/[^0-9]/',$w3formtokentime) OR preg_match('/[^0-9]/',$w3forumid) ){
-  	 echo 'FORBIDDEN: request contains unexpected chars';
+  	 echo 'W3FORBIDDEN: Request contains unexpected chars';
   	 exit;
     }
 
    if ( $fid < 1 ){
-  	echo 'W3ERRORAV: file ID too small';
+  	echo 'W3ERRORAV: File ID too small';
   	exit;
    }
     
    // If the user session mismatch
   if ( $user->data['session_id'] != $w3usession ){
-  	echo 'FORBIDDEN: session mismatch';
+  	echo 'W3FORBIDDEN: Session mismatch';
   	exit;
   }
  
@@ -124,7 +136,7 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
 
  // If the token mismatch
   if( $w3formtoken !== $token_ck ){
-  	echo 'FORBIDDEN: form token mismatch';
+  	echo 'W3FORBIDDEN: form token mismatch';
   	exit;
   }
   
@@ -133,14 +145,14 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
 	$form_token_lifetime = ($config['form_token_lifetime'] < 30) ? 30 : $config['form_token_lifetime'];
 // If the token time expired	
   if(  time() - $form_token_lifetime > $w3formtokentime  ){
-  	echo 'FORBIDDEN: form token time expired';
+  	echo 'W3FORBIDDEN: form token time expired';
   	exit;
   }
 
 // If attachment is not allowed	
   if (!$config['allow_attachments'] && !$config['allow_pm_attach'])
   {
-	  echo 'FORBIDDEN: ATTACHMENT FUNCTIONALITY DISABLED';
+	  echo 'W3FORBIDDEN: ATTACHMENT FUNCTIONALITY DISABLED';
   	exit;
   }
 
@@ -149,7 +161,7 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
  // If attachment allowed for this user or/on this forum
   if ( $auth->acl_get('u_attach') < 1 OR $auth->acl_get('f_attach', $w3forumid) < 1 )
   {
-	  echo 'FORBIDDEN: user with no attachment capabilities or no forum permissions';
+	  echo 'W3FORBIDDEN: user with no attachment capabilities or no forum permissions';
   	exit;
   }
   
@@ -185,20 +197,20 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
  
  } // END // if(!empty($ajaxAdatadel)){
 
- 
+// _s1_ = server 1 
  $physical_filename_rand = $user->data['user_id'] . '_s1_' . substr(md5(bin2hex(random_bytes(16))), 2) . substr(time(), 2);
  $audioDataIns = base64_decode($audioData);
 
   if( strlen($audioDataIns) > $config['max_filesize'] && $config['max_filesize'] > 0 )
   {
-   echo'W3ERRORAV: FILE DATA IS TOO BIG';
+   echo'W3ERRORAV: File data is too big';
    exit;
   }
  
  $phpBBfilesFAN = $phpbb_root_path . $config['upload_path']. '/' . $physical_filename_rand;
 
  if(! file_put_contents($phpBBfilesFAN, $audioDataIns) ){
-   echo'W3ERRORAV: CANNOT SAVE FILE';
+   echo'W3ERRORAV: Cannot save file';
    exit;
   } else {
   	
@@ -206,7 +218,7 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
  
   $filesize = @filesize($phpBBfilesFAN);
    if(!$filesize){
-  	 echo'W3ERRORAV: FILESIZE NO DATA';
+  	 echo'W3ERRORAV: Filesize no data';
   	 @unlink($phpBBfilesFAN);
   	 exit;
 	 }
@@ -236,10 +248,10 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
    if($attachID > 0){
     echo "OK-AV-PROCESSED//#//".$attachID.'//#//'.$sql_arr['post_msg_id'].'//#//'.$sql_arr['topic_id'].'//#//'.$sql_arr['in_message'].'//#//'.$sql_arr['poster_id'].'//#//'.$sql_arr['is_orphan'].'//#//'.$sql_arr['physical_filename'].'//#//'.$sql_arr['real_filename'].'//#//'.$sql_arr['download_count'].'//#//'.$sql_arr['attach_comment'].'//#//'.$sql_arr['extension'].'//#//'.$sql_arr['mimetype'].'//#//'.$sql_arr['filesize'].'//#//'.$sql_arr['filetime'].'//#//'.$sql_arr['thumbnail'];
    } else {
-    	echo "W3ERRORAV: AV NOT PROCESSED";
+    	echo "W3ERRORAV: AV not processed";
     }
   
  }
   
-echo'AVRDONE';//'SPEECH DO CALL';
+echo'AVRDONE';
 exit;
