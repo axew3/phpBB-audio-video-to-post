@@ -81,7 +81,7 @@ class main_listener implements EventSubscriberInterface
       $viewtopic = 1;
      }
   
-   // extract all attachments for each post, and build a ready array of data to be used 
+   // extract all mp3 attachments for each post, and build a ready array of data to be used 
    // order attachments based on as they was, or as post_msg_id/attach_id
    // unset 'physical_filename' on resulting array
  
