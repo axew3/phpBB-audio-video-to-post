@@ -2,7 +2,7 @@
 
 # phpBB Audio Video to posts Recorder and Player
 ### Use phpBB mp3 attachments like Telegram or Whatsapp discussion.
-### It is extremely fast, light and secure.
+### It is so fast, easy, light and secure.
 
 Actually only audio (not video) recorder for phpBB
 
