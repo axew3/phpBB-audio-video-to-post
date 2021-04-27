@@ -29,7 +29,7 @@ define('IN_PHPBB', true);
 ///////////////////
 //
 // Define the root from here
-$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../../../../';
+$phpbb_root_path = './../../../../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 //
 ///////////////////
