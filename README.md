@@ -2,8 +2,6 @@
 
 # phpBB Audio Video to posts Recorder and Player
 
-### (Help and examples are Under Construction)
-
 Actually only audio (not video) recorder for phpBB
 
 ## Update/install: 
