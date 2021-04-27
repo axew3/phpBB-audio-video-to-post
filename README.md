@@ -1,3 +1,5 @@
+## Version 1.0.0
+
 # phpBB Audio Video to posts Recorder and Player
 
 ### (Help and examples are Under Construction)
