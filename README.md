@@ -5,7 +5,8 @@
 #### Fast, easy, light and secure.
 
 Actually only audio (not video) recorder for phpBB.
-Audio attachment dimension/recorder time is based on the phpBB attachment dimension setting.
+
+Audio attachment dimension/recorder time based on the phpBB attachment dimension setting.
 
 ## Update/install: 
 
