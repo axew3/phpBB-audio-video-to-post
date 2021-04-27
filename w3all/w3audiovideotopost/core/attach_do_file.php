@@ -10,7 +10,7 @@
 
 // note that errors output may do not need to contain the word 'error' due to js code executed on response
 
- // Check the POST request. If there are any, cleanup
+ // Check the POST request. If there is any output error, cleanup
   ob_get_contents();
   ob_end_clean();
  // check 
