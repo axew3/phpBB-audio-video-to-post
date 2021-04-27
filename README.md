@@ -4,6 +4,16 @@
 
 Actually only audio (not video) recorder for phpBB
 
+## Update/install: 
+
+If updating, disable the old version and delete data into ACP Extensions Manager
+
+Remove the folder w3audiovideotopost into
+    
+    /ext/w3all/
+
+then follow installing the new version
+
 ## Install
 
 Copy the "w3all" folder into 
@@ -15,6 +25,12 @@ So you'll have:
 Go to "ACP" > "Customise" > "Extensions" and enable the "Audio Player and Recorder on Posts" extension
 
 Done
+
+## How do i can style it?
+
+## CSS:
+
+    /ext/w3all/w3audiovideotopost/styles/prosilver/template/css/style.css
 
 Get general (raw) idea on how it work at axew3.com:
 
