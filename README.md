@@ -8,7 +8,9 @@ Actually only audio (not video) recorder for phpBB
 
 If updating, disable the old version and delete data into ACP Extensions Manager
 
-Remove the folder w3audiovideotopost into
+Remove the folder 
+### w3audiovideotopost 
+into
     
     /ext/w3all/
 
