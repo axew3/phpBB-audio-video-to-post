@@ -38,7 +38,7 @@ Done
 
     /ext/w3all/w3audiovideotopost/styles/prosilver/template/css/style.css
 
-Get general (raw) idea on how it work at axew3.com:
+Get general (raw) idea (images are old, newer versions imporved several aspects) on how it work at axew3.com:
 
 ### [phpBB Audio Player and Recorder on Posts](https://www.axew3.com/w3/forums/viewtopic.php?f=20&t=1628 "phpbb images attachments rotation")
 
