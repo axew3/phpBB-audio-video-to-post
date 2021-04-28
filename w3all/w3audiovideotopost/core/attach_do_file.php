@@ -76,11 +76,6 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
    $w3formtoken = $ajaxAdatadel[2];
    $w3formtokentime = $ajaxAdatadel[3];
    $w3forumid = $ajaxAdatadel[4];
-
-    if( preg_match('/[^0-9A-Za-z]/',$w3usession) OR preg_match('/[^0-9A-Za-z]/',$w3formtoken) OR preg_match('/[^0-9]/',$w3formtokentime) OR preg_match('/[^0-9]/',$w3forumid) ){
-     echo 'W3FORBIDDEN: Request contains unexpected chars';
-     exit;
-    }
   }
   
    if( !empty($ajaxAdata) ){
@@ -90,12 +85,13 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
    $w3formtoken = $ajaxAdata[4];
    $w3formtokentime = $ajaxAdata[5];
    $w3forumid = $ajaxAdata[6];
+  }
+  
        
     if( preg_match('/[^0-9A-Za-z]/',$w3usession) OR preg_match('/[^0-9A-Za-z]/',$w3formtoken) OR preg_match('/[^0-9]/',$w3formtokentime) OR preg_match('/[^0-9]/',$w3forumid) ){
      echo 'W3FORBIDDEN: Request contains unexpected chars';
      exit;
-    }
-  }
+    }  
  
     // If the user session mismatch
   if ( $user->data['session_id'] != $w3usession ){
