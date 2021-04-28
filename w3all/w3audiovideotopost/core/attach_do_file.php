@@ -178,17 +178,6 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
     exit;
    }
     
-
-  
- // If there are permissions over this file
-  $own_attachment = ($auth->acl_get('a_attach') || $attachment['poster_id'] == $user->data['user_id']) ? true : false;
-  if (!$own_attachment) 
-  {
-   echo 'W3ERRORAV: you have no permissions over this file';
-     exit;
-  }
-  
-  
  $sql = 'SELECT * 
   FROM ' . ATTACHMENTS_TABLE . "
   WHERE attach_id = $fid";
@@ -202,7 +191,16 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
     exit;
   }
   
-  
+ // If there are permissions over this file
+  $own_attachment = ($auth->acl_get('a_attach') || $attachment['poster_id'] == $user->data['user_id']) ? true : false;
+  echo $user->data['user_id'].$attachment['poster_id'];
+  if( $user->data['user_id'] == 1 && $attachment['poster_id'] != 1 ){
+      echo 'W3ERRORAV: you have no permissions over this file';
+   } elseif (!$own_attachment) 
+     {
+      echo 'W3ERRORAV: you have no permissions over this file';
+     }
+
    $sql = 'DELETE FROM ' . ATTACHMENTS_TABLE . "
     WHERE attach_id = $fid";
     $db->sql_query($sql);
