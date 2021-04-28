@@ -140,7 +140,6 @@ class main_listener implements EventSubscriberInterface
 
   public function overall_footer_body_after()
   {
-    //echo $this->config['max_filesize'];exit;
     $this->template->assign_vars(array( 
      'W3ALLREQ_MODE'  => $this->request->variable('mode', ''),
      'W3ALLMAX_ATTACHDIM' => $this->config['max_filesize'],
