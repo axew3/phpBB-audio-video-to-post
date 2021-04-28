@@ -547,7 +547,6 @@ if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'repl
     } else if (XHR.readyState === 3) {
       //console.log("XHRwaiting -> "+XHR.response);
     } else if (XHR.readyState === 4) { // onload 
-    	console.log("RESP -> "+XHR.response);
        if(task == 'doAttach'){
         w3_AUres_ajaxup(XHR.response);
        }
