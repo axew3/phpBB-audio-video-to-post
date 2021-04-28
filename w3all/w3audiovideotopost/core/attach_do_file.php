@@ -48,7 +48,6 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
 }
 
  include($phpbb_root_path . 'common.' . $phpEx);
- //require($phpbb_root_path . 'includes/functions_download' . '.' . $phpEx);
 
  // Start session management, do not update session page.
  $user->session_begin(false);
@@ -70,7 +69,6 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
    $ajaxAdatadel = str_replace(chr(0), '', $ajaxAdatadel);
    $ajaxAdatadel = explode(',',$ajaxAdatadel);
 
-   // fid, w3usession, w3formtoken, w3formtokentime, w3forumid
    $fid = intval($ajaxAdatadel[0]);
    $w3usession = $ajaxAdatadel[1];
    $w3formtoken = $ajaxAdatadel[2];
