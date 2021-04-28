@@ -73,7 +73,7 @@ class main_listener implements EventSubscriberInterface
       $pidUA[$v['post_id']] = $v['username'];
     } 
 
-    // if on viewtopic: be sure of this, in certain conditions
+    // if on viewtopic: so to be sure of this, in certain conditions
   if( strpos( $this->request->server('REQUEST_URI'), 'viewtopic.'.$this->php_ext) === false ){
       $viewtopic = '';
     } else 
