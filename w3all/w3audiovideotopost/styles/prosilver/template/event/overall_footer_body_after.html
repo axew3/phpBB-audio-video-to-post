@@ -547,6 +547,7 @@ if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'repl
     } else if (XHR.readyState === 3) {
       //console.log("XHRwaiting -> "+XHR.response);
     } else if (XHR.readyState === 4) { // onload 
+    	console.log("RESP -> "+XHR.response);
        if(task == 'doAttach'){
         w3_AUres_ajaxup(XHR.response);
        }
@@ -623,12 +624,13 @@ if( W3ALLREQ_MODE == 'edit' || W3ALLREQ_MODE == 'post' || W3ALLREQ_MODE == 'repl
  $("#w3allAVdo").on("click", function(event) {
   event.preventDefault();
   var an = document.getElementById("w3recAname").value;
+  var w3anck = [ an, w3usession, w3formtoken, w3formtokentime, w3forumid ];  
   var reader = new window.FileReader();
   reader.readAsDataURL(w3blobAV);
    reader.onloadend = function()
    {
     base64data = reader.result;
-    w3sendThisAVd(base64data,an,'doAttach');
+    w3sendThisAVd(base64data,w3anck,'doAttach');
    }
 
    //document.getElementById("w3avpreloader").setAttribute("style", "display:block");
