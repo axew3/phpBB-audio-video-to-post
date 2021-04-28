@@ -190,9 +190,11 @@ else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'
 
   if( $user->data['user_id'] == 1 && $attachment['poster_id'] != 1 ){
       echo 'W3ERRORAV: you have no permissions over this file';
+      exit;
    } elseif (!$own_attachment) 
      {
       echo 'W3ERRORAV: you have no permissions over this file';
+      exit;
      }
 
    $sql = 'DELETE FROM ' . ATTACHMENTS_TABLE . "
